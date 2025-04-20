@@ -2,7 +2,7 @@
 
 **A zk-SNARK powered decentralized identity layer for age verification on Solana.**
 
-Live Demo: [https://proof-of-you.vercel.app](https://proof-of-you.vercel.app)
+Live Demo: [https://proofofyou.vercel.app](https://proofofyou.vercel.app)
 
 ---
 
