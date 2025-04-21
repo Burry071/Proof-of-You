@@ -2,7 +2,7 @@
 
 **Anonymous Age Verification with Zero-Knowledge Proofs on Solana**
 
-[Live Demo → https://proofofyou.vercel.app](https://proofofyou.vercel.app)
+[![Vercel](https://vercelbadge.vercel.app/api/Burry071/Proof-of-you-)](https://proofofyou.vercel.app)
 
 ## Overview
 
@@ -22,9 +22,8 @@ Proof-of-You is a privacy-preserving age verification system built on Solana. It
 - Next.js & TypeScript
 - Tailwind CSS
 
-## Try It
+## Live Demo
 
-Visit the live demo:  
 [https://proofofyou.vercel.app](https://proofofyou.vercel.app)
 
 ## License
