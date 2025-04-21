@@ -59,7 +59,7 @@ export function VerificationCard({ verification }: VerificationCardProps) {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{verification.type}</CardTitle>
+          <CardTitle className="text-base sm:text-lg">{verification.type}</CardTitle>
           {getStatusBadge(verification.status)}
         </div>
       </CardHeader>
@@ -81,8 +81,8 @@ export function VerificationCard({ verification }: VerificationCardProps) {
             <p className="text-xs text-muted-foreground">Transaction</p>
             <div className="flex items-center">
               <p className="text-sm truncate">
-                {verification.transactionId.substring(0, 8)}...
-                {verification.transactionId.substring(verification.transactionId.length - 8)}
+                {verification.transactionId.substring(0, 6)}...
+                {verification.transactionId.substring(verification.transactionId.length - 6)}
               </p>
               <Link
                 href={`https://explorer.solana.com/tx/${verification.transactionId}`}

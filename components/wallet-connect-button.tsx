@@ -7,9 +7,10 @@ import { connectWallet } from "@/lib/solana"
 
 interface WalletConnectButtonProps {
   onConnect?: (address: string) => void
+  className?: string
 }
 
-export function WalletConnectButton({ onConnect }: WalletConnectButtonProps) {
+export function WalletConnectButton({ onConnect, className }: WalletConnectButtonProps) {
   const [isConnecting, setIsConnecting] = useState(false)
   const [walletAddress, setWalletAddress] = useState<string | null>(null)
 
@@ -30,7 +31,7 @@ export function WalletConnectButton({ onConnect }: WalletConnectButtonProps) {
 
   if (walletAddress) {
     return (
-      <Button variant="outline" size="sm" disabled>
+      <Button variant="outline" size="sm" disabled className={className}>
         <Wallet className="mr-2 h-4 w-4" />
         {walletAddress.substring(0, 4)}...{walletAddress.substring(walletAddress.length - 4)}
       </Button>
@@ -38,16 +39,18 @@ export function WalletConnectButton({ onConnect }: WalletConnectButtonProps) {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleConnect} disabled={isConnecting}>
+    <Button variant="outline" size="sm" onClick={handleConnect} disabled={isConnecting} className={className}>
       {isConnecting ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Connecting...
+          <span className="hidden sm:inline">Connecting...</span>
+          <span className="sm:hidden">Connect</span>
         </>
       ) : (
         <>
           <Wallet className="mr-2 h-4 w-4" />
-          Connect Wallet
+          <span className="hidden sm:inline">Connect Wallet</span>
+          <span className="sm:hidden">Connect</span>
         </>
       )}
     </Button>

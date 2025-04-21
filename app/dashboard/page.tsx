@@ -5,10 +5,11 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, CheckCircle, Clock, Plus, RefreshCw } from "lucide-react"
+import { CheckCircle, Clock, Plus, RefreshCw } from "lucide-react"
 import { WalletConnectButton } from "@/components/wallet-connect-button"
 import { VerificationCard } from "@/components/verification-card"
 import { connectWallet } from "@/lib/solana"
+import { MobileHeader } from "@/components/mobile-header"
 
 interface Verification {
   id: string
@@ -109,125 +110,120 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container flex min-h-screen flex-col py-6">
-      <header className="flex items-center justify-between pb-6">
-        <div className="flex items-center">
-          <Link href="/" className="mr-6">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Home
+    <div className="flex min-h-screen flex-col">
+      <MobileHeader />
+      <div className="container flex flex-1 flex-col py-4 md:py-6">
+        <header className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-4 md:pb-6">
+          <h1 className="text-xl md:text-2xl font-bold">Verification Dashboard</h1>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={!isConnected || isLoading}>
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Refresh
             </Button>
-          </Link>
-          <h1 className="text-2xl font-bold">Verification Dashboard</h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={!isConnected || isLoading}>
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh
-          </Button>
-          <WalletConnectButton onConnect={handleWalletConnect} />
-        </div>
-      </header>
+            <WalletConnectButton onConnect={handleWalletConnect} />
+          </div>
+        </header>
 
-      {!isConnected && !isLoading ? (
-        <div className="flex flex-1 flex-col items-center justify-center">
-          <Card className="mx-auto w-full max-w-md">
-            <CardHeader>
-              <CardTitle className="text-center">Connect Your Wallet</CardTitle>
-              <CardDescription className="text-center">
-                Connect your Solana wallet to view your verifications
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center pb-6">
-              <WalletConnectButton onConnect={handleWalletConnect} />
-            </CardContent>
-          </Card>
-        </div>
-      ) : (
-        <div className="flex-1">
-          <Tabs defaultValue="active" className="w-full">
-            <TabsList className="mb-6 grid w-full grid-cols-3">
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="pending">Pending</TabsTrigger>
-              <TabsTrigger value="expired">Expired</TabsTrigger>
-            </TabsList>
+        {!isConnected && !isLoading ? (
+          <div className="flex flex-1 flex-col items-center justify-center py-8">
+            <Card className="mx-auto w-full max-w-md">
+              <CardHeader>
+                <CardTitle className="text-center">Connect Your Wallet</CardTitle>
+                <CardDescription className="text-center">
+                  Connect your Solana wallet to view your verifications
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-center pb-6">
+                <WalletConnectButton onConnect={handleWalletConnect} />
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className="flex-1">
+            <Tabs defaultValue="active" className="w-full">
+              <TabsList className="mb-4 md:mb-6 grid w-full grid-cols-3">
+                <TabsTrigger value="active">Active</TabsTrigger>
+                <TabsTrigger value="pending">Pending</TabsTrigger>
+                <TabsTrigger value="expired">Expired</TabsTrigger>
+              </TabsList>
 
-            {isLoading ? (
-              <div className="flex h-64 items-center justify-center">
-                <div className="flex flex-col items-center">
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
-                  <p className="mt-4 text-sm text-muted-foreground">Loading verifications...</p>
+              {isLoading ? (
+                <div className="flex h-64 items-center justify-center">
+                  <div className="flex flex-col items-center">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
+                    <p className="mt-4 text-sm text-muted-foreground">Loading verifications...</p>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                <TabsContent value="active" className="mt-0">
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {verifications
-                      .filter((v) => v.status === "active")
-                      .map((verification) => (
-                        <VerificationCard key={verification.id} verification={verification} />
-                      ))}
+              ) : (
+                <>
+                  <TabsContent value="active" className="mt-0">
+                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {verifications
+                        .filter((v) => v.status === "active")
+                        .map((verification) => (
+                          <VerificationCard key={verification.id} verification={verification} />
+                        ))}
 
-                    <Card className="flex h-full flex-col items-center justify-center p-6">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                        <Plus className="h-6 w-6 text-muted-foreground" />
-                      </div>
-                      <h3 className="mt-4 text-lg font-medium">Create New Verification</h3>
-                      <p className="mb-4 mt-2 text-center text-sm text-muted-foreground">
-                        Generate a new zero-knowledge proof for age verification
-                      </p>
-                      <Button asChild>
-                        <Link href="/verify">Create Verification</Link>
-                      </Button>
-                    </Card>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="pending" className="mt-0">
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {verifications
-                      .filter((v) => v.status === "pending")
-                      .map((verification) => (
-                        <VerificationCard key={verification.id} verification={verification} />
-                      ))}
-
-                    {verifications.filter((v) => v.status === "pending").length === 0 && (
-                      <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
-                        <Clock className="h-12 w-12 text-muted-foreground" />
-                        <h3 className="mt-4 text-lg font-medium">No Pending Verifications</h3>
-                        <p className="mt-2 text-center text-sm text-muted-foreground">
-                          You don't have any pending verifications at the moment
+                      <Card className="flex h-full flex-col items-center justify-center p-6">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                          <Plus className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <h3 className="mt-4 text-lg font-medium">Create New Verification</h3>
+                        <p className="mb-4 mt-2 text-center text-sm text-muted-foreground">
+                          Generate a new zero-knowledge proof for age verification
                         </p>
+                        <Button asChild>
+                          <Link href="/verify">Create Verification</Link>
+                        </Button>
                       </Card>
-                    )}
-                  </div>
-                </TabsContent>
+                    </div>
+                  </TabsContent>
 
-                <TabsContent value="expired" className="mt-0">
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {verifications
-                      .filter((v) => v.status === "expired")
-                      .map((verification) => (
-                        <VerificationCard key={verification.id} verification={verification} />
-                      ))}
+                  <TabsContent value="pending" className="mt-0">
+                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {verifications
+                        .filter((v) => v.status === "pending")
+                        .map((verification) => (
+                          <VerificationCard key={verification.id} verification={verification} />
+                        ))}
 
-                    {verifications.filter((v) => v.status === "expired").length === 0 && (
-                      <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
-                        <CheckCircle className="h-12 w-12 text-muted-foreground" />
-                        <h3 className="mt-4 text-lg font-medium">No Expired Verifications</h3>
-                        <p className="mt-2 text-center text-sm text-muted-foreground">
-                          You don't have any expired verifications
-                        </p>
-                      </Card>
-                    )}
-                  </div>
-                </TabsContent>
-              </>
-            )}
-          </Tabs>
-        </div>
-      )}
+                      {verifications.filter((v) => v.status === "pending").length === 0 && (
+                        <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
+                          <Clock className="h-12 w-12 text-muted-foreground" />
+                          <h3 className="mt-4 text-lg font-medium">No Pending Verifications</h3>
+                          <p className="mt-2 text-center text-sm text-muted-foreground">
+                            You don't have any pending verifications at the moment
+                          </p>
+                        </Card>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="expired" className="mt-0">
+                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {verifications
+                        .filter((v) => v.status === "expired")
+                        .map((verification) => (
+                          <VerificationCard key={verification.id} verification={verification} />
+                        ))}
+
+                      {verifications.filter((v) => v.status === "expired").length === 0 && (
+                        <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
+                          <CheckCircle className="h-12 w-12 text-muted-foreground" />
+                          <h3 className="mt-4 text-lg font-medium">No Expired Verifications</h3>
+                          <p className="mt-2 text-center text-sm text-muted-foreground">
+                            You don't have any expired verifications
+                          </p>
+                        </Card>
+                      )}
+                    </div>
+                  </TabsContent>
+                </>
+              )}
+            </Tabs>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
