@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Shield, Menu, X, ArrowRight, Github } from "lucide-react"
+import { Shield, Menu, X, ArrowRight, Github } from 'lucide-react'
 import { GITHUB_REPO_URL } from "@/lib/constants"
 import { usePathname } from "next/navigation"
 
@@ -22,6 +22,7 @@ export function MobileHeader() {
     { name: "Use Cases", path: "/use-cases" },
     { name: "FAQ", path: "/faq" },
     { name: "Documentation", path: "/docs" },
+    { name: "README", path: "/docs/readme" },
   ]
 
   return (
