@@ -8,7 +8,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: [],
     unoptimized: true,
   },
 }

@@ -1,11 +1,17 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Shield, Lock, Eye } from "lucide-react"
 import { GITHUB_REPO_URL } from "@/lib/constants"
 import { MobileHeader } from "@/components/mobile-header"
 
 export default function Home() {
+  // Large logo for the hero section
+  const HeroLogo = () => (
+    <div className="flex h-64 w-64 items-center justify-center rounded-full bg-emerald-100">
+      <Shield className="h-32 w-32 text-emerald-600" />
+    </div>
+  )
+
   return (
     <div className="flex min-h-screen flex-col">
       <MobileHeader />
@@ -38,7 +44,7 @@ export default function Home() {
               </div>
               <div className="flex items-center justify-center">
                 <div className="relative flex items-center justify-center h-[250px] w-[250px] md:h-[350px] md:w-[350px]">
-                  <Image src="/logo.png" alt="Proof-of-You Logo" width={200} height={200} priority className="z-10" />
+                  <HeroLogo />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-b from-emerald-500/20 to-emerald-500/0"></div>
                 </div>
               </div>
