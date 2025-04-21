@@ -1,34 +1,26 @@
-Proof-of-You — Anonymous Age Verification with ZK Proofs on Solana
+Proof-of-You — Anonymous Age Verification with ZK Proofs
 
 Live Demo: https://proof-of-you-project.vercel.app/
-GitHub: https://github.com/Burry071/Proof-of-you-.git
 
 
 ---
 
 Overview
 
-In a world where age verification usually means sharing sensitive personal info, Proof-of-You flips the script.
-
-We're building a privacy-first age verification system powered by zero-knowledge proofs (ZKPs) and verified on Solana.
-No documents. No data leaks. Just pure cryptographic trust.
+Proof-of-You is a privacy-preserving age verification system that leverages zero-knowledge proofs (ZKPs). Users can prove they are above a specific age threshold without sharing any personal information, such as their birthdate or government ID.
 
 
 ---
 
 What It Does
 
-Users input their date of birth locally — it never leaves their device.
+Users input their date of birth locally (never shared or uploaded).
 
-A ZK proof is generated that proves the user is over a specific age.
+A ZK proof is generated that validates age eligibility.
 
-This proof is verified on-chain using a Solana smart contract.
+The proof is verified using a smart contract on the Solana blockchain.
 
-Users can share their verified status via QR code or private link.
-
-
-> Think: "Prove you're over 18 without showing your ID — or even your birthdate."
-
+Users can share their verification via a QR code or secure link.
 
 
 
@@ -36,15 +28,13 @@ Users can share their verified status via QR code or private link.
 
 Use Cases
 
-Age-gated websites (alcohol, tobacco, adult content)
+Age-restricted online services (alcohol, tobacco, adult content)
 
-Gaming platforms with 13+/18+ rules
+Online gaming with age minimums (13+, 18+)
 
-Social apps with minor protection
+Social platforms with age-related features
 
-DeFi or DAO participation (lightweight compliance)
-
-DePIN projects with real-world constraints
+Anonymous KYC-lite scenarios in DeFi or DAOs
 
 
 
@@ -52,59 +42,51 @@ DePIN projects with real-world constraints
 
 Tech Stack
 
-zk-SNARKs (circom + snarkjs)
+zk-SNARKs (Circom + snarkjs)
 
-Solana (Anchor framework smart contracts)
+Solana blockchain (Anchor framework)
 
-Next.js + Vercel frontend
+Next.js frontend deployed with Vercel
 
-Local-only data handling for max privacy
-
-NTT-based credential flow (on the roadmap)
+Local-only data handling for user privacy
 
 
 
 ---
 
-Why It Matters
+Features
 
-Today’s verification systems are broken — they expose way too much. We’re fixing that with a ZK-native identity flow that respects privacy while maintaining trust.
+No PII ever stored or shared
 
-This project is about decentralized trust without surveillance — built for the real world.
+Cryptographically secure age verification
 
+Easy-to-use UI with real-time feedback
 
----
-
-What’s Next
-
-Launch NTT (non-transferable token) support
-
-Add custom verifier dashboard
-
-Allow app devs to set their own age thresholds
-
-Expand SDK & API for easy third-party integration
+Secure sharing of proof status
 
 
 
 ---
 
-Screenshots / Demo Video
+Getting Started
 
-(Dropping soon — full walkthrough with voiceover + product demo)
+To run this project locally:
 
+git clone https://github.com/Burry071/Proof-of-you-.git
+cd Proof-of-you-
+npm install
+npm run dev
 
----
-
-Open Source & Dev-Friendly
-
-Everything’s open source — check it out, fork it, or drop suggestions:
-
-GitHub: https://github.com/Burry071/Proof-of-you-.git
+Visit http://localhost:3000 to try it locally.
 
 
 ---
 
-Built With Love (and zk magic) for the Solana Breakpoint Hackathon
+License
 
-Let me know what you think or if you want to collaborate. Always down to chat ZK, Solana, and privacy.
+This project is open source and available under the MIT License.
+
+
+---
+
+For feedback, suggestions, or contributions — feel free to open an issue or PR.
