@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Shield, Loader2 } from "lucide-react"
 import { generateProof } from "@/lib/zk-proof"
 import { MobileHeader } from "@/components/mobile-header"
+import { EmbeddedFAQ } from "@/components/embedded-faq"
 
 export default function VerifyPage() {
   const router = useRouter()
@@ -164,6 +165,11 @@ export default function VerifyPage() {
             </Link>
             .
           </p>
+
+          <div className="mt-8 w-full">
+            <h2 className="mb-4 text-center text-lg font-medium">Frequently Asked Questions</h2>
+            <EmbeddedFAQ items={["data-persistence", "security"]} />
+          </div>
         </div>
       </div>
     </div>

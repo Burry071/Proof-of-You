@@ -130,6 +130,17 @@ export default function Home() {
             </a>
             .
           </p>
+          <div className="flex space-x-4 text-sm text-muted-foreground">
+            <Link href="/faq" className="underline underline-offset-4 hover:text-foreground">
+              FAQ
+            </Link>
+            <Link href="/docs" className="underline underline-offset-4 hover:text-foreground">
+              Docs
+            </Link>
+            <Link href="/use-cases" className="underline underline-offset-4 hover:text-foreground">
+              Use Cases
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

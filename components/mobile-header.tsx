@@ -20,6 +20,7 @@ export function MobileHeader() {
     { name: "Verify Age", path: "/verify" },
     { name: "Demo", path: "/demo" },
     { name: "Use Cases", path: "/use-cases" },
+    { name: "FAQ", path: "/faq" },
     { name: "Documentation", path: "/docs" },
   ]
 
