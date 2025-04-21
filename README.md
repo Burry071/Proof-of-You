@@ -1,57 +1,53 @@
 # Proof-of-You
 
-**A zk-SNARK powered decentralized identity layer for age verification on Solana.**
+<div align="center">
+  <img src="public/logo.png" alt="Proof-of-You Logo" width="200"/>
+  <h3>Anonymous Age Verification with Zero-Knowledge Proofs on Solana</h3>
 
-Live Demo: [https://proofofyou.vercel.app](https://proofofyou.vercel.app)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Solana](https://img.shields.io/badge/Solana-black?logo=solana)](https://solana.com/)
+  [![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+</div>
 
----
+## 📋 Overview
 
-## What is Proof-of-You?
+Proof-of-You is a privacy-preserving age verification system that uses zero-knowledge proofs (zk-SNARKs) to verify a user's age without revealing any personal information or identity. Built on Solana, it provides a secure, transparent, and anonymous way to prove you're above a certain age threshold.
 
-**Proof-of-You** allows users to anonymously prove they are over a certain age (e.g., 18+) without revealing their date of birth or any personal information. It leverages **zero-knowledge proofs** (zk-SNARKs) to preserve privacy and decentralization — all built for the **Solana ecosystem**.
+<div align="center">
+  <img src="public/demo-screenshot.png" alt="Proof-of-You Demo" width="800"/>
+</div>
 
----
+## ✨ Features
 
-## Why It Matters
+- **🔒 Privacy-First**: Your personal information never leaves your device
+- **🧮 Zero-Knowledge Proofs**: Verify your age without revealing your actual birthdate
+- **⛓️ Solana Blockchain**: Secure and transparent verification on Solana
+- **🚫 No Data Storage**: We don't store any personal data or wallet addresses
+- **🕶️ Anonymous**: Complete anonymity throughout the verification process
+- **📱 User Dashboard**: Manage and share your verifications
+- **🔗 Shareable Proofs**: Generate QR codes and links for verification
+- **🧩 Developer API**: Easy integration with existing applications
 
-- No more over-sharing personal details for simple age checks
-- Can be used in:
-  - Age-restricted dApps
-  - DAO voting with age criteria
-  - Web3 social platforms
-  - Anonymous KYC layers
+## 🛠️ Technology Stack
 
----
+- **Frontend**: Next.js, React, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Blockchain**: Solana
+- **Zero-Knowledge Proofs**: zk-SNARKs
+- **Deployment**: Vercel
 
-## How It Works (Demo Flow)
+## 🚀 Getting Started
 
-1. User clicks **Start Verification**
-2. A fake zk-SNARK proof is "generated"
-3. Success message appears:
-   > *"You are verified as 18+. No personal info shared. zk-Proof ID: #zkp8930"*
+### Prerequisites
 
-*(In a real implementation, this would interface with circom/snarkjs + Solana smart contracts)*
+- Node.js 18+ and npm/yarn/pnpm
+- A Solana wallet (Phantom, Solflare, etc.)
 
----
+### Installation
 
-## Built With
-
-- HTML / CSS / JavaScript
-- Vercel (deployment)
-- Branding & mock flow by [Burry071](https://github.com/Burry071)
-
----
-
-## Vision
-
-We imagine a future where:
-
-- Identity is **modular**
-- Privacy is **default**
-- zk-proofs empower users, not just protocols
-
----
-
-## License
-
-MIT License — free to use, fork, and build on.
+1. Clone the repository:
+   \`\`\`bash
+   git clone https://github.com/Burry071/Proof-of-you-.git
+   cd proof-of-you

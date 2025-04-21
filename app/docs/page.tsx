@@ -18,7 +18,7 @@ export default function DocsPage() {
         </div>
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" asChild>
-            <Link href="https://github.com/Burry071/proof-of-you" target="_blank" rel="noopener noreferrer">
+            <Link href="https://github.com/Burry071/Proof-of-you-.git" target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </Link>

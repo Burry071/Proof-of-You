@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Shield, Lock, Eye } from "lucide-react"
+import { GitHubButton } from "@/components/github-button"
+import { GITHUB_REPO_URL } from "@/lib/constants"
 
 export default function Home() {
   return (
@@ -15,11 +17,7 @@ export default function Home() {
           </div>
           <div className="flex flex-1 items-center justify-end space-x-4">
             <nav className="flex items-center space-x-2">
-              <Link href="https://github.com/Burry071/proof-of-you" target="_blank" rel="noreferrer">
-                <Button variant="ghost" size="sm">
-                  GitHub
-                </Button>
-              </Link>
+              <GitHubButton variant="ghost" />
               <Link href="/dashboard">
                 <Button variant="ghost" size="sm">
                   Dashboard
@@ -147,7 +145,7 @@ export default function Home() {
             </a>
             . The source code is available on{" "}
             <a
-              href="https://github.com/Burry071/proof-of-you"
+              href={GITHUB_REPO_URL}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
