@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Shield, Menu, X, ArrowRight, Github } from 'lucide-react'
+import { Menu, X, ArrowRight, Github } from "lucide-react"
 import { GITHUB_REPO_URL } from "@/lib/constants"
 import { usePathname } from "next/navigation"
 
@@ -22,7 +23,6 @@ export function MobileHeader() {
     { name: "Use Cases", path: "/use-cases" },
     { name: "FAQ", path: "/faq" },
     { name: "Documentation", path: "/docs" },
-    { name: "README", path: "/docs/readme" },
   ]
 
   return (
@@ -30,7 +30,7 @@ export function MobileHeader() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 flex">
           <Link href="/" className="flex items-center space-x-2">
-            <Shield className="h-5 w-5 text-emerald-500" />
+            <Image src="/logo.png" alt="Proof-of-You Logo" width={24} height={24} className="h-6 w-6" />
             <span className="font-bold">Proof-of-You</span>
           </Link>
         </div>
@@ -46,7 +46,7 @@ export function MobileHeader() {
               <div className="flex flex-col space-y-4 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Shield className="h-5 w-5 text-emerald-500" />
+                    <Image src="/logo.png" alt="Proof-of-You Logo" width={20} height={20} className="h-5 w-5" />
                     <span className="font-bold">Proof-of-You</span>
                   </div>
                   <Button variant="ghost" size="icon" onClick={closeSheet} className="h-8 w-8">

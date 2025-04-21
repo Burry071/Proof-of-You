@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Shield, Lock, Eye } from "lucide-react"
 import { GITHUB_REPO_URL } from "@/lib/constants"
@@ -36,16 +37,9 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] rounded-full bg-gradient-to-b from-emerald-500/20 to-emerald-500/0 p-4">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Shield className="h-24 w-24 md:h-32 md:w-32 text-emerald-500" />
-                  </div>
-                  <div className="absolute -left-4 top-1/4 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background shadow-lg">
-                    <Lock className="h-5 w-5 md:h-6 md:w-6 text-emerald-500" />
-                  </div>
-                  <div className="absolute -right-4 top-1/2 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-background shadow-lg">
-                    <Eye className="h-5 w-5 md:h-6 md:w-6 text-emerald-500" />
-                  </div>
+                <div className="relative flex items-center justify-center h-[250px] w-[250px] md:h-[350px] md:w-[350px]">
+                  <Image src="/logo.png" alt="Proof-of-You Logo" width={200} height={200} priority className="z-10" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-b from-emerald-500/20 to-emerald-500/0"></div>
                 </div>
               </div>
             </div>

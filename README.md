@@ -1,7 +1,7 @@
 # Proof-of-You
 
 <div align="center">
-  <img src="public/logo.png" alt="Proof-of-You Logo" width="200"/>
+  <img src="./public/logo.png" alt="Proof-of-You Logo" width="200"/>
   <h3>Anonymous Age Verification with Zero-Knowledge Proofs on Solana</h3>
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -16,7 +16,7 @@
 Proof-of-You is a privacy-preserving age verification system that uses zero-knowledge proofs (zk-SNARKs) to verify a user's age without revealing any personal information or identity. Built on Solana, it provides a secure, transparent, and anonymous way to prove you're above a certain age threshold.
 
 <div align="center">
-  <img src="public/demo-screenshot.png" alt="Proof-of-You Demo" width="800"/>
+  <img src="./public/demo-screenshot.png" alt="Proof-of-You Demo" width="800"/>
 </div>
 
 ## ✨ Features
@@ -49,7 +49,7 @@ Proof-of-You is a privacy-preserving age verification system that uses zero-know
 
 1. Clone the repository:
    \`\`\`bash
-   git clone https://github.com/yourusername/proof-of-you.git
+   git clone https://github.com/Burry071/Proof-of-you-.git
    cd proof-of-you
    \`\`\`
 
@@ -72,44 +72,6 @@ Proof-of-You is a privacy-preserving age verification system that uses zero-know
    \`\`\`
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
-
-## 📸 Screenshots
-
-<div align="center">
-  <img src="public/screenshots/verification-flow.png" alt="Verification Flow" width="800"/>
-</div>
-
-## 🔍 How It Works
-
-1. **Enter Date of Birth**: The user enters their date of birth on their device
-2. **Generate Proof**: A zero-knowledge proof is generated locally that proves the user is above a certain age threshold without revealing their actual birthdate
-3. **Store on Blockchain**: The proof is stored on the Solana blockchain for verification
-4. **Share Verification**: The user can share their verification with third parties via a link or QR code
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-Project Link: [https://github.com/yourusername/proof-of-you](https://github.com/yourusername/proof-of-you)
-
-## 🙏 Acknowledgments
-
-- [Solana](https://solana.com/) for the blockchain infrastructure
-- [Next.js](https://nextjs.org/) for the frontend framework
-- [shadcn/ui](https://ui.shadcn.com/) for the UI components
-- [zk-SNARKs](https://z.cash/technology/zksnarks/) for the zero-knowledge proof technology
 \`\`\`
 
-Let's also create a verification flow screenshot for the README:
+Now, let's create a demo screenshot for the README:
