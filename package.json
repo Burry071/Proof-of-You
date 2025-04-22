@@ -61,10 +61,11 @@
     "@auth/core": "latest",
     "nodemailer": "latest",
     "prisma": "latest",
-    "next-auth": "latest",
     "@prisma/client": "latest",
+    "next-auth": "latest",
+    "react-qr-code": "latest",
     "bcryptjs": "latest",
-    "react-qr-code": "latest"
+    "@next-auth/prisma-adapter": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
