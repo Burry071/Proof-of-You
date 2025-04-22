@@ -1,229 +1,212 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { useSession } from "next-auth/react"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CheckCircle, Clock, Plus, RefreshCw } from "lucide-react"
-import { WalletConnectButton } from "@/components/wallet-connect-button"
-import { VerificationCard } from "@/components/verification-card"
-import { connectWallet } from "@/lib/solana"
-import { MobileHeader } from "@/components/mobile-header"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Shield, Clock, CheckCircle, FileText } from "lucide-react"
 
-interface Verification {
-  id: string
-  type: string
-  status: "active" | "expired" | "pending"
-  createdAt: string
-  expiresAt: string
-  transactionId: string
-  proofHash: string
-}
+// This would come from your API in a real application
+const mockVerificationData = [
+  { name: "Jan", verifications: 4 },
+  { name: "Feb", verifications: 3 },
+  { name: "Mar", verifications: 2 },
+  { name: "Apr", verifications: 7 },
+  { name: "May", verifications: 2 },
+  { name: "Jun", verifications: 6 },
+  { name: "Jul", verifications: 8 },
+]
 
-export default function DashboardPage() {
-  const [isConnected, setIsConnected] = useState(false)
-  const [walletAddress, setWalletAddress] = useState<string | null>(null)
-  const [verifications, setVerifications] = useState<Verification[]>([])
+const mockVerifications = [
+  {
+    id: "v1",
+    type: "Identity",
+    status: "Verified",
+    date: "2023-04-10T10:30:00Z",
+    verifier: "Govt Agency X",
+  },
+  {
+    id: "v2",
+    type: "Education",
+    status: "Pending",
+    date: "2023-04-15T14:20:00Z",
+    verifier: "University Y",
+  },
+  {
+    id: "v3",
+    type: "Employment",
+    status: "Verified",
+    date: "2023-03-22T09:45:00Z",
+    verifier: "Company Z",
+  },
+  {
+    id: "v4",
+    type: "Certificate",
+    status: "Rejected",
+    date: "2023-04-05T16:10:00Z",
+    verifier: "Certification Board",
+  },
+]
+
+export default function Dashboard() {
+  const { data: session } = useSession({ required: true })
+  const [activeTab, setActiveTab] = useState("overview")
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check if wallet was previously connected
-    const checkWalletConnection = async () => {
-      try {
-        // In a real app, you would check if the user has a connected wallet
-        // For demo purposes, we'll just simulate this
-        const connected = localStorage.getItem("walletConnected") === "true"
+    // Simulate data loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
 
-        if (connected) {
-          const address = await connectWallet()
-          setWalletAddress(address)
-          setIsConnected(true)
-        }
-      } catch (error) {
-        console.error("Failed to check wallet connection:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    checkWalletConnection()
+    return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    // Fetch verifications when wallet is connected
-    if (isConnected && walletAddress) {
-      fetchVerifications()
-    }
-  }, [isConnected, walletAddress])
-
-  const fetchVerifications = async () => {
-    setIsLoading(true)
-
-    // In a real app, you would fetch verifications from your API or blockchain
-    // For demo purposes, we'll use mock data
-    setTimeout(() => {
-      const mockVerifications: Verification[] = [
-        {
-          id: "ver_1",
-          type: "Age Verification (18+)",
-          status: "active",
-          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          transactionId: "5xTR7nE9qLs2KGdAZ1VmPyXj4WBCQoHFUbgAeGNt8vJw",
-          proofHash: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2",
-        },
-        {
-          id: "ver_2",
-          type: "KYC Verification",
-          status: "pending",
-          createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-          expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
-          transactionId: "7zYX8wVuTsR6qPo5nM4lK3jI2hG1fD0cB9aZ8xW7vU6t",
-          proofHash: "p2o1n0m9l8k7j6i5h4g3f2e1d0c9b8a7z6y5x4w3v2u1t0s9r8q7p6o5n4m3l2k1j0i9h8g7f6e5d4c3b2a1",
-        },
-        {
-          id: "ver_3",
-          type: "Age Verification (21+)",
-          status: "expired",
-          createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
-          expiresAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          transactionId: "3aB4cD5eF6gH7iJ8kL9mN0oP1qR2sT3uV4wX5yZ6aB7cD8eF9g",
-          proofHash: "z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6r5q4p3o2n1m0l9k8",
-        },
-      ]
-
-      setVerifications(mockVerifications)
-      setIsLoading(false)
-    }, 1500)
-  }
-
-  const handleWalletConnect = (address: string) => {
-    setWalletAddress(address)
-    setIsConnected(true)
-    localStorage.setItem("walletConnected", "true")
-    fetchVerifications()
-  }
-
-  const handleRefresh = () => {
-    fetchVerifications()
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    )
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <MobileHeader />
-      <div className="container flex flex-1 flex-col py-4 md:py-6">
-        <header className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-4 md:pb-6">
-          <h1 className="text-xl md:text-2xl font-bold">Verification Dashboard</h1>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={!isConnected || isLoading}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh
-            </Button>
-            <WalletConnectButton onConnect={handleWalletConnect} />
-          </div>
-        </header>
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">Welcome back{session?.user?.name ? `, ${session.user.name}` : ""}</h1>
+          <p className="text-muted-foreground">Manage and track your identity verifications</p>
+        </div>
+        <Button>Request New Verification</Button>
+      </div>
 
-        {!isConnected && !isLoading ? (
-          <div className="flex flex-1 flex-col items-center justify-center py-8">
-            <Card className="mx-auto w-full max-w-md">
-              <CardHeader>
-                <CardTitle className="text-center">Connect Your Wallet</CardTitle>
-                <CardDescription className="text-center">
-                  Connect your Solana wallet to view your verifications
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-center pb-6">
-                <WalletConnectButton onConnect={handleWalletConnect} />
-              </CardContent>
-            </Card>
-          </div>
-        ) : (
-          <div className="flex-1">
-            <Tabs defaultValue="active" className="w-full">
-              <TabsList className="mb-4 md:mb-6 grid w-full grid-cols-3">
-                <TabsTrigger value="active">Active</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="expired">Expired</TabsTrigger>
-              </TabsList>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Verifications</CardTitle>
+            <Shield className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">12</div>
+            <p className="text-xs text-muted-foreground">+2 from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Verifications</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">3</div>
+            <p className="text-xs text-muted-foreground">Processing since April 15</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Verification Success Rate</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">89%</div>
+            <p className="text-xs text-muted-foreground">+4% from previous quarter</p>
+          </CardContent>
+        </Card>
+      </div>
 
-              {isLoading ? (
-                <div className="flex h-64 items-center justify-center">
-                  <div className="flex flex-col items-center">
-                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-600"></div>
-                    <p className="mt-4 text-sm text-muted-foreground">Loading verifications...</p>
+      <Tabs defaultValue="overview" onValueChange={setActiveTab} className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="verifications">Verifications</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Verification Activity</CardTitle>
+              <CardDescription>Your verification requests over time</CardDescription>
+            </CardHeader>
+            <CardContent className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={mockVerificationData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="verifications" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="verifications" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Verifications</CardTitle>
+              <CardDescription>Manage your identity verification requests</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {mockVerifications.map((verification) => (
+                  <div
+                    key={verification.id}
+                    className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border rounded-lg"
+                  >
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-medium">{verification.type} Verification</span>
+                        <Badge
+                          variant={
+                            verification.status === "Verified"
+                              ? "default"
+                              : verification.status === "Pending"
+                                ? "outline"
+                                : "destructive"
+                          }
+                        >
+                          {verification.status}
+                        </Badge>
+                      </div>
+                      <span className="text-sm text-muted-foreground">Verifier: {verification.verifier}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(verification.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <Button variant="outline" size="sm" className="mt-2 md:mt-0">
+                      View Details
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Documents</CardTitle>
+              <CardDescription>Manage your uploaded verification documents</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-center h-40 border-2 border-dashed rounded-lg">
+                <div className="text-center">
+                  <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
+                  <h3 className="mt-2 text-sm font-medium">No documents uploaded</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Upload documents to request verification</p>
+                  <div className="mt-4">
+                    <Button size="sm">Upload Document</Button>
                   </div>
                 </div>
-              ) : (
-                <>
-                  <TabsContent value="active" className="mt-0">
-                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {verifications
-                        .filter((v) => v.status === "active")
-                        .map((verification) => (
-                          <VerificationCard key={verification.id} verification={verification} />
-                        ))}
-
-                      <Card className="flex h-full flex-col items-center justify-center p-6">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                          <Plus className="h-6 w-6 text-muted-foreground" />
-                        </div>
-                        <h3 className="mt-4 text-lg font-medium">Create New Verification</h3>
-                        <p className="mb-4 mt-2 text-center text-sm text-muted-foreground">
-                          Generate a new zero-knowledge proof for age verification
-                        </p>
-                        <Button asChild>
-                          <Link href="/verify">Create Verification</Link>
-                        </Button>
-                      </Card>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="pending" className="mt-0">
-                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {verifications
-                        .filter((v) => v.status === "pending")
-                        .map((verification) => (
-                          <VerificationCard key={verification.id} verification={verification} />
-                        ))}
-
-                      {verifications.filter((v) => v.status === "pending").length === 0 && (
-                        <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
-                          <Clock className="h-12 w-12 text-muted-foreground" />
-                          <h3 className="mt-4 text-lg font-medium">No Pending Verifications</h3>
-                          <p className="mt-2 text-center text-sm text-muted-foreground">
-                            You don't have any pending verifications at the moment
-                          </p>
-                        </Card>
-                      )}
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="expired" className="mt-0">
-                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {verifications
-                        .filter((v) => v.status === "expired")
-                        .map((verification) => (
-                          <VerificationCard key={verification.id} verification={verification} />
-                        ))}
-
-                      {verifications.filter((v) => v.status === "expired").length === 0 && (
-                        <Card className="col-span-full flex h-64 flex-col items-center justify-center p-6">
-                          <CheckCircle className="h-12 w-12 text-muted-foreground" />
-                          <h3 className="mt-4 text-lg font-medium">No Expired Verifications</h3>
-                          <p className="mt-2 text-center text-sm text-muted-foreground">
-                            You don't have any expired verifications
-                          </p>
-                        </Card>
-                      )}
-                    </div>
-                  </TabsContent>
-                </>
-              )}
-            </Tabs>
-          </div>
-        )}
-      </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
