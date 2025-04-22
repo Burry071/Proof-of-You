@@ -81,12 +81,8 @@ Visit http://localhost:3000 to try it locally.
 
 
 ---
-
-License
-
-This project is open source and available under the MIT License.
+© 2025 Burry071. This project is open for hackathon review only. Not licensed for reuse or distribution.
 
 
----
 
 For feedback, suggestions, or contributions — feel free to open an issue or PR.
