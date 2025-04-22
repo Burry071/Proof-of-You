@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Shield, Clock, CheckCircle, FileText } from "lucide-react"
 
-// This would come from your API in a real application
+// Mock data for demonstration purposes
 const mockVerificationData = [
   { name: "Jan", verifications: 4 },
   { name: "Feb", verifications: 3 },
@@ -52,7 +52,7 @@ const mockVerifications = [
 ]
 
 export default function Dashboard() {
-  const { data: session } = useSession({ required: true })
+  const { data: session, status } = useSession()
   const [activeTab, setActiveTab] = useState("overview")
   const [isLoading, setIsLoading] = useState(true)
 
@@ -65,10 +65,23 @@ export default function Dashboard() {
     return () => clearTimeout(timer)
   }, [])
 
-  if (isLoading) {
+  // Show loading state while session is loading
+  if (status === "loading" || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  // Redirect if not authenticated
+  if (status === "unauthenticated") {
+    // In a client component, we can't use redirect, so we'll show a message
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
+        <p className="mb-4">You need to be signed in to view this page.</p>
+        <Button onClick={() => (window.location.href = "/auth/signin")}>Sign In</Button>
       </div>
     )
   }

@@ -60,12 +60,9 @@
     "zod": "^3.24.1",
     "@auth/core": "latest",
     "nodemailer": "latest",
-    "prisma": "latest",
-    "@prisma/client": "latest",
-    "next-auth": "latest",
     "react-qr-code": "latest",
-    "bcryptjs": "latest",
-    "@next-auth/prisma-adapter": "latest"
+    "next-auth": "latest",
+    "bcryptjs": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

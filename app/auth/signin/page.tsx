@@ -50,6 +50,9 @@ export default function SignIn() {
         <CardHeader>
           <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardDescription className="mt-2 text-sm bg-yellow-50 p-2 rounded border border-yellow-200">
+            <strong>Demo credentials:</strong> user@example.com / password123
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

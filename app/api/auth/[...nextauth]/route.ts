@@ -1,11 +1,23 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { verifyPassword } from "@/lib/auth"
-import prisma from "@/lib/prisma"
+import { compare } from "bcryptjs"
+
+// This is a simplified version that doesn't rely on Prisma
+// In a production app, you would connect to your database here
+
+// Mock users for demonstration purposes
+const users = [
+  {
+    id: "1",
+    name: "Demo User",
+    email: "user@example.com",
+    // This is a hashed version of "password123"
+    passwordHash: "$2a$12$k8Y1THPAC6MN/Xh.dM/h0.3WBjAG.bjL9Dj9EJcj7jJlXyVlbmEu2",
+    image: null,
+  },
+]
 
 const handler = NextAuth({
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -19,13 +31,12 @@ const handler = NextAuth({
         }
 
         try {
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
-          })
+          // Find user in our mock database
+          const user = users.find((user) => user.email === credentials.email)
 
           if (!user || !user.passwordHash) return null
 
-          const isValid = await verifyPassword(credentials.password, user.passwordHash)
+          const isValid = await compare(credentials.password, user.passwordHash)
 
           if (!isValid) return null
 
