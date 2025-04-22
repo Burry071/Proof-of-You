@@ -70,14 +70,14 @@ Secure sharing of proof status
 
 Getting Started
 
-To run this project locally:
+To check out the code:
 
 git clone https://github.com/Burry071/Proof-of-you-.git
 cd Proof-of-you-
 npm install
-npm run dev
 
-Visit http://localhost:3000 to try it locally.
+This installs all dependencies. For live demo and usage, visit:
+https://proof-of-you-project.vercel.app
 
 
 ---
