@@ -3,19 +3,24 @@
 import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
     setError("")
 
     try {
@@ -27,12 +32,14 @@ export default function SignIn() {
 
       if (result?.error) {
         setError("Invalid email or password")
+        setIsLoading(false)
         return
       }
 
       router.push("/dashboard")
     } catch (error) {
       setError("An unexpected error occurred")
+      setIsLoading(false)
     }
   }
 
@@ -48,13 +55,23 @@ export default function SignIn() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="/auth/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">
+                  Forgot password?
+                </Link>
+              </div>
               <Input
                 id="password"
                 type="password"
@@ -63,11 +80,19 @@ export default function SignIn() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
         </CardContent>
+        <CardFooter>
+          <div className="w-full text-center">
+            <p className="text-sm text-muted-foreground mb-4">Don't have an account?</p>
+            <Button variant="outline" className="w-full" asChild>
+              <Link href="/auth/signup">Create an Account</Link>
+            </Button>
+          </div>
+        </CardFooter>
       </Card>
     </div>
   )

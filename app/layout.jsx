@@ -1,5 +1,6 @@
 import "./globals.css"
 import AuthSessionProvider from "./providers/session-provider"
+import { SiteHeader } from "@/components/site-header"
 
 export const metadata = {
   title: "Proof of You",
@@ -11,7 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthSessionProvider>{children}</AuthSessionProvider>
+        <AuthSessionProvider>
+          <SiteHeader />
+          <main>{children}</main>
+        </AuthSessionProvider>
       </body>
     </html>
   )
