@@ -61,8 +61,8 @@
     "@auth/core": "latest",
     "nodemailer": "latest",
     "react-qr-code": "latest",
-    "next-auth": "latest",
-    "bcryptjs": "latest"
+    "bcryptjs": "latest",
+    "next-auth": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

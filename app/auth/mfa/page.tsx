@@ -4,16 +4,25 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function MFAVerification() {
+  const { data: session, status } = useSession()
   const [code, setCode] = useState<string[]>(["", "", "", "", "", ""])
   const [error, setError] = useState<string | null>(null)
   const [timer, setTimer] = useState(30)
   const [isVerifying, setIsVerifying] = useState(false)
   const router = useRouter()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/signin")
+    }
+  }, [status, router])
 
   // Handle timer countdown
   useEffect(() => {
@@ -105,12 +114,23 @@ export default function MFAVerification() {
     setError(null)
   }
 
+  // Show loading state while session is loading
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-xl">Two-Factor Authentication</CardTitle>
-          <CardDescription>Enter the 6-digit code from your authenticator app</CardDescription>
+          <CardDescription>
+            Enter the 6-digit code from your authenticator app or use code 123456 for demo
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
