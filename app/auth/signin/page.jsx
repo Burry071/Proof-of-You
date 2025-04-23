@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, Play } from "lucide-react"
 
 export default function SignIn() {
   const [email, setEmail] = useState("")
@@ -17,6 +17,7 @@ export default function SignIn() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { signIn, enterDemoMode } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -24,23 +25,18 @@ export default function SignIn() {
     setError("")
 
     try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      })
-
-      if (result?.error) {
-        setError("Invalid email or password")
-        setIsLoading(false)
-        return
-      }
-
+      await signIn(email, password)
       router.push("/dashboard")
     } catch (error) {
-      setError("An unexpected error occurred")
+      setError("Invalid email or password")
+    } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleDemoMode = () => {
+    enterDemoMode()
+    router.push("/dashboard")
   }
 
   return (
@@ -49,9 +45,6 @@ export default function SignIn() {
         <CardHeader>
           <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
-          <CardDescription className="mt-2 text-sm bg-yellow-50 p-2 rounded border border-yellow-200">
-            <strong>Demo credentials:</strong> user@example.com / password123
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,7 +61,7 @@ export default function SignIn() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/auth/forgot-password" className="text-sm text-blue-500 hover:text-blue-600">
+                <Link href="/auth/forgot-password" className="text-sm text-primary hover:text-primary/80">
                   Forgot password?
                 </Link>
               </div>
@@ -84,6 +77,22 @@ export default function SignIn() {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or</span>
+              </div>
+            </div>
+
+            <Button variant="outline" className="w-full mt-4" onClick={handleDemoMode}>
+              <Play className="mr-2 h-4 w-4" />
+              Try Demo Mode
+            </Button>
+          </div>
         </CardContent>
         <CardFooter>
           <div className="w-full text-center">

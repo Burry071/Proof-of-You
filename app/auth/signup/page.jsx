@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +20,7 @@ export default function SignUp() {
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { signUp } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -39,27 +41,15 @@ export default function SignUp() {
     }
 
     try {
-      // In a real app, you would call your API to register the user
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, email, password }),
-      // })
-      // const data = await response.json()
-
-      // For demo purposes, we'll simulate a successful registration
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Show success message
+      await signUp(name, email, password)
       setSuccess(true)
 
-      // Redirect to sign-in page after a delay
+      // Redirect to dashboard after a delay
       setTimeout(() => {
-        router.push("/auth/signin")
+        router.push("/dashboard")
       }, 2000)
     } catch (error) {
-      console.error("Registration error:", error)
-      setError("An unexpected error occurred. Please try again.")
+      setError(error.message || "An unexpected error occurred. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -77,7 +67,7 @@ export default function SignUp() {
             <Alert className="bg-green-50 border-green-200">
               <CheckCircle className="h-4 w-4 text-green-600" />
               <AlertDescription className="text-green-700">
-                Account created successfully! Redirecting to sign in...
+                Account created successfully! Redirecting to dashboard...
               </AlertDescription>
             </Alert>
           ) : (
@@ -140,7 +130,7 @@ export default function SignUp() {
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-blue-500 hover:text-blue-600 font-medium">
+            <Link href="/auth/signin" className="text-primary hover:text-primary/80 font-medium">
               Sign in
             </Link>
           </div>
