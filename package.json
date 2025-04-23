@@ -65,7 +65,9 @@
     "next-auth": "latest",
     "react-qr-code": "latest",
     "bcryptjs": "latest",
-    "@next-auth/prisma-adapter": "latest"
+    "@next-auth/prisma-adapter": "latest",
+    "child_process": "latest",
+    "fs": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
