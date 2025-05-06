@@ -1,25 +1,10 @@
 "use client"
 
-import Link from "next/link"
-
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/auth-context"
-import { useDemoData } from "@/providers/demo-data-provider"
-import { DemoIndicator } from "@/components/demo-indicator"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Progress } from "@/components/ui/progress"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { FileUp, X, FileCheck, AlertTriangle, UploadCloud } from "lucide-react"
 
 export default function DocumentUpload() {
-  const { isAuthenticated, isDemo, enterDemoMode } = useAuth()
-  const { uploadDocument } = useDemoData()
-  const router = useRouter()
-
   const [selectedType, setSelectedType] = useState("id")
   const [file, setFile] = useState(null)
   const [preview, setPreview] = useState(null)
@@ -34,16 +19,10 @@ export default function DocumentUpload() {
   })
 
   const fileInputRef = useRef(null)
+  const router = useRouter()
 
-  // If not authenticated and not in demo mode, enter demo mode automatically
-  useEffect(() => {
-    if (!isAuthenticated && !isDemo) {
-      enterDemoMode()
-    }
-  }, [isAuthenticated, isDemo, enterDemoMode])
-
-  const handleTypeChange = (value) => {
-    setSelectedType(value)
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value)
   }
 
   const handleFileChange = (e) => {
@@ -125,20 +104,11 @@ export default function DocumentUpload() {
         isComplete: Math.random() > 0.1,
       })
 
-      // In demo mode, use the demo data provider
-      const documentData = {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-        documentType: selectedType,
-      }
-
-      uploadDocument(documentData)
       setSuccess(true)
 
       // Redirect after a delay
       setTimeout(() => {
-        router.push("/dashboard")
+        router.push("/documents")
       }, 3000)
     } catch (error) {
       setError("An error occurred during upload. Please try again.")
@@ -161,58 +131,88 @@ export default function DocumentUpload() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2">
             <h1 className="text-3xl font-bold mb-2">Upload Verification Document</h1>
-            {isDemo && <DemoIndicator />}
+            <span className="inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
+              <span>Demo</span>
+            </span>
           </div>
-          <p className="text-muted-foreground">
-            {isDemo
-              ? "Demo Mode: Document uploads are simulated and not actually stored"
-              : "Upload your documents for verification"}
-          </p>
+          <p className="text-gray-500">Demo Mode: Document uploads are simulated and not actually stored</p>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Upload Document</CardTitle>
-            <CardDescription>Please upload a clear, high-quality image of your document</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title">Upload Document</h2>
+            <p className="card-description">Please upload a clear, high-quality image of your document</p>
+          </div>
+          <div className="card-content space-y-4">
             {success ? (
-              <Alert className="bg-green-50 border-green-200">
-                <FileCheck className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-700">
-                  Document uploaded successfully! Redirecting to dashboard...
-                </AlertDescription>
-              </Alert>
+              <div className="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded relative">
+                <div className="flex items-center">
+                  <FileCheck className="h-5 w-5 mr-2" />
+                  <span>Document uploaded successfully! Redirecting to documents page...</span>
+                </div>
+              </div>
             ) : (
               <>
                 <div className="space-y-2">
-                  <Label>Document Type</Label>
-                  <RadioGroup value={selectedType} onValueChange={handleTypeChange} className="grid grid-cols-2 gap-2">
+                  <label className="block text-sm font-medium text-gray-700">Document Type</label>
+                  <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center space-x-2 border rounded-md p-3">
-                      <RadioGroupItem value="id" id="id" />
-                      <Label htmlFor="id" className="cursor-pointer">
+                      <input
+                        type="radio"
+                        id="id"
+                        name="documentType"
+                        value="id"
+                        checked={selectedType === "id"}
+                        onChange={handleTypeChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="id" className="cursor-pointer">
                         ID Card
-                      </Label>
+                      </label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3">
-                      <RadioGroupItem value="passport" id="passport" />
-                      <Label htmlFor="passport" className="cursor-pointer">
+                      <input
+                        type="radio"
+                        id="passport"
+                        name="documentType"
+                        value="passport"
+                        checked={selectedType === "passport"}
+                        onChange={handleTypeChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="passport" className="cursor-pointer">
                         Passport
-                      </Label>
+                      </label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3">
-                      <RadioGroupItem value="driver_license" id="driver_license" />
-                      <Label htmlFor="driver_license" className="cursor-pointer">
+                      <input
+                        type="radio"
+                        id="driver_license"
+                        name="documentType"
+                        value="driver_license"
+                        checked={selectedType === "driver_license"}
+                        onChange={handleTypeChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="driver_license" className="cursor-pointer">
                         Driver's License
-                      </Label>
+                      </label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3">
-                      <RadioGroupItem value="utility_bill" id="utility_bill" />
-                      <Label htmlFor="utility_bill" className="cursor-pointer">
+                      <input
+                        type="radio"
+                        id="utility_bill"
+                        name="documentType"
+                        value="utility_bill"
+                        checked={selectedType === "utility_bill"}
+                        onChange={handleTypeChange}
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="utility_bill" className="cursor-pointer">
                         Utility Bill
-                      </Label>
+                      </label>
                     </div>
-                  </RadioGroup>
+                  </div>
                 </div>
 
                 {!file ? (
@@ -222,11 +222,11 @@ export default function DocumentUpload() {
                     className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center h-48 cursor-pointer"
                     onClick={() => fileInputRef.current?.click()}
                   >
-                    <UploadCloud className="h-10 w-10 text-muted-foreground mb-3" />
-                    <p className="text-sm text-muted-foreground text-center">
+                    <UploadCloud className="h-10 w-10 text-gray-400 mb-3" />
+                    <p className="text-sm text-gray-500 text-center">
                       Drag and drop your document here or click to browse
                     </p>
-                    <p className="text-xs text-muted-foreground mt-2">Accepts JPG, PNG or PDF (max 5MB)</p>
+                    <p className="text-xs text-gray-500 mt-2">Accepts JPG, PNG or PDF (max 5MB)</p>
                     <input
                       type="file"
                       ref={fileInputRef}
@@ -237,14 +237,12 @@ export default function DocumentUpload() {
                   </div>
                 ) : (
                   <div className="border rounded-lg p-4 relative">
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="absolute right-2 top-2 h-6 w-6"
+                    <button
+                      className="absolute right-2 top-2 h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center"
                       onClick={clearFile}
                     >
                       <X className="h-4 w-4" />
-                    </Button>
+                    </button>
 
                     {preview ? (
                       <div className="flex justify-center">
@@ -256,14 +254,14 @@ export default function DocumentUpload() {
                       </div>
                     ) : (
                       <div className="flex items-center justify-center h-48">
-                        <FileUp className="h-8 w-8 mr-2 text-muted-foreground" />
+                        <FileUp className="h-8 w-8 mr-2 text-gray-400" />
                         <span>{file.name}</span>
                       </div>
                     )}
 
                     <div className="mt-4 flex items-center text-sm">
-                      <FileCheck className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <span className="text-muted-foreground">
+                      <FileCheck className="h-4 w-4 mr-2 text-gray-500" />
+                      <span className="text-gray-500">
                         {file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)
                       </span>
                     </div>
@@ -271,10 +269,12 @@ export default function DocumentUpload() {
                 )}
 
                 {error && (
-                  <Alert variant="destructive">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
+                  <div className="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+                    <div className="flex items-center">
+                      <AlertTriangle className="h-5 w-5 mr-2" />
+                      <span>{error}</span>
+                    </div>
+                  </div>
                 )}
 
                 {uploading && (
@@ -283,7 +283,9 @@ export default function DocumentUpload() {
                       <span>Uploading...</span>
                       <span>{uploadProgress}%</span>
                     </div>
-                    <Progress value={uploadProgress} className="h-2" />
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${uploadProgress}%` }}></div>
+                    </div>
                   </div>
                 )}
 
@@ -293,7 +295,7 @@ export default function DocumentUpload() {
 
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div
-                        className={`p-2 rounded ${feedback.readability === "good" ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"}`}
+                        className={`p-2 rounded ${feedback.readability === "good" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}
                       >
                         <div className="font-medium">Readability</div>
                         <div className="flex items-center mt-1">
@@ -307,7 +309,7 @@ export default function DocumentUpload() {
                       </div>
 
                       <div
-                        className={`p-2 rounded ${feedback.authenticity === "verified" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}
+                        className={`p-2 rounded ${feedback.authenticity === "verified" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
                       >
                         <div className="font-medium">Authenticity</div>
                         <div className="flex items-center mt-1">
@@ -322,43 +324,41 @@ export default function DocumentUpload() {
                     </div>
 
                     {feedback.readability === "poor" && (
-                      <Alert>
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertDescription>
-                          Please ensure your document is well-lit and all text is clearly visible.
-                        </AlertDescription>
-                      </Alert>
+                      <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded relative">
+                        <div className="flex items-center">
+                          <AlertTriangle className="h-4 w-4 mr-2" />
+                          <span>Please ensure your document is well-lit and all text is clearly visible.</span>
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
               </>
             )}
-          </CardContent>
-          <CardFooter>
-            {!success && (
-              <Button onClick={handleUpload} disabled={!file || !selectedType || uploading} className="w-full">
-                {uploading ? "Uploading..." : "Upload Document"}
-              </Button>
-            )}
-          </CardFooter>
-        </Card>
-
-        {isDemo && (
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <h3 className="font-medium mb-2">Demo Mode Information</h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              In demo mode, document uploads are simulated. You can test the upload functionality with any valid file,
-              but no actual data will be stored on our servers.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              To save your documents and use the full functionality, please{" "}
-              <Link href="/auth/signup" className="text-primary hover:underline">
-                create an account
-              </Link>
-              .
-            </p>
           </div>
-        )}
+          <div className="card-footer">
+            {!success && (
+              <button
+                onClick={handleUpload}
+                disabled={!file || !selectedType || uploading}
+                className="btn btn-primary w-full"
+              >
+                {uploading ? "Uploading..." : "Upload Document"}
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+          <h3 className="font-medium mb-2">Demo Mode Information</h3>
+          <p className="text-sm text-gray-500 mb-2">
+            In demo mode, document uploads are simulated. You can test the upload functionality with any valid file, but
+            no actual data will be stored on our servers.
+          </p>
+          <p className="text-sm text-gray-500">
+            This demo showcases the document verification workflow including upload, analysis, and feedback.
+          </p>
+        </div>
       </div>
     </div>
   )

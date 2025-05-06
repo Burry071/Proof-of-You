@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server"
 
-// This is a simple API route for the demo version
-// It doesn't use Prisma or any database
 export async function GET() {
   return NextResponse.json({
     message: "This is a demo API endpoint",
