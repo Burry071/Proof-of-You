@@ -1,5 +1,3 @@
-import Link from "next/link"
-
 export default function Home() {
   return (
     <div className="max-w-4xl mx-auto">
@@ -8,14 +6,12 @@ export default function Home() {
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
           A privacy-preserving age verification system using zero-knowledge proofs and Solana blockchain.
         </p>
-        <div className="flex justify-center gap-4">
-          <Link
-            href="/dashboard"
-            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Explore Demo
-          </Link>
-        </div>
+        <a
+          href="/dashboard"
+          className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Explore Demo
+        </a>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-12">

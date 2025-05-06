@@ -1,9 +1,38 @@
-"use client"
-
-import { useAuth } from "@/contexts/auth-context"
-
 export default function Dashboard() {
-  const { user } = useAuth()
+  // Mock data
+  const verifications = [
+    {
+      id: "v1",
+      type: "Identity",
+      status: "Verified",
+      date: "2023-04-10T10:30:00Z",
+      verifier: "Govt Agency X",
+    },
+    {
+      id: "v2",
+      type: "Education",
+      status: "Pending",
+      date: "2023-04-15T14:20:00Z",
+      verifier: "University Y",
+    },
+  ]
+
+  const documents = [
+    {
+      id: "id_front",
+      name: "ID Card (Front)",
+      type: "image/jpeg",
+      uploadDate: "2023-04-05T08:30:00Z",
+      status: "Verified",
+    },
+    {
+      id: "id_back",
+      name: "ID Card (Back)",
+      type: "image/jpeg",
+      uploadDate: "2023-04-05T08:31:00Z",
+      status: "Verified",
+    },
+  ]
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -18,15 +47,15 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="border p-4 rounded-lg">
           <h2 className="font-bold mb-2">Verifications</h2>
-          <p className="text-3xl font-bold">{user.demoData.verifications.length}</p>
+          <p className="text-3xl font-bold">{verifications.length}</p>
         </div>
         <div className="border p-4 rounded-lg">
           <h2 className="font-bold mb-2">Documents</h2>
-          <p className="text-3xl font-bold">{user.demoData.documents.length}</p>
+          <p className="text-3xl font-bold">{documents.length}</p>
         </div>
         <div className="border p-4 rounded-lg">
           <h2 className="font-bold mb-2">Certificates</h2>
-          <p className="text-3xl font-bold">{user.demoData.certificates.length}</p>
+          <p className="text-3xl font-bold">1</p>
         </div>
       </div>
 
@@ -35,7 +64,7 @@ export default function Dashboard() {
           <h2 className="font-bold">Recent Verifications</h2>
         </div>
         <div className="divide-y">
-          {user.demoData.verifications.map((verification) => (
+          {verifications.map((verification) => (
             <div key={verification.id} className="p-4 flex justify-between items-center">
               <div>
                 <p className="font-medium">{verification.type} Verification</p>
@@ -60,7 +89,7 @@ export default function Dashboard() {
           <h2 className="font-bold">Your Documents</h2>
         </div>
         <div className="divide-y">
-          {user.demoData.documents.map((document) => (
+          {documents.map((document) => (
             <div key={document.id} className="p-4 flex justify-between items-center">
               <div>
                 <p className="font-medium">{document.name}</p>
