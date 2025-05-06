@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   reactStrictMode: true,
-  swcMinify: false,
+  swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -9,6 +9,18 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    domains: ["vercel.app"],
+  },
+  env: {
+    NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000",
+  },
+  // Add this section to properly handle environment variables
+  publicRuntimeConfig: {
+    VERCEL_URL: process.env.VERCEL_URL || "localhost:3000",
+  },
+  serverRuntimeConfig: {
+    VERCEL_URL: process.env.VERCEL_URL || "localhost:3000",
   },
 }
+
+module.exports = nextConfig

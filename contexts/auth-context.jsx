@@ -63,6 +63,9 @@ const DEMO_USER = {
 export function AuthProvider({ children }) {
   const [demoStartTime] = useState(new Date())
 
+  // Use NEXT_PUBLIC_ prefix for client-side access
+  const siteUrl = process.env.NEXT_PUBLIC_VERCEL_URL || "localhost:3000"
+
   // Get demo user data
   const getDemoUser = () => {
     return DEMO_USER
