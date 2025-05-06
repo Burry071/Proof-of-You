@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -9,12 +9,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["localhost"],
     unoptimized: true,
   },
-  experimental: {
-    appDir: true,
-  },
 }
-
-module.exports = nextConfig
