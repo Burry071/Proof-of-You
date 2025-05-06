@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification - Proof of You Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="demo-banner">
+    <p>Demo Mode: This is a demonstration version with sample data.</p>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">
+        <a href="index.html">Proof of You</a> <span class="demo-tag">(Demo)</span>
+      </h1>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="verify.html" class="active">Verify</a></li>
+          <li><a href="documents.html">Documents</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Verification</h1>
+
+    <div class="alert alert-info">
+      <strong>Demo Mode:</strong> This is a simulated verification page.
+    </div>
+
+    <div class="card">
+      <h2>Certificate Verification</h2>
+      <div class="form-group">
+        <label for="certificate-id">Certificate ID</label>
+        <div class="input-group">
+          <input type="text" id="certificate-id" placeholder="Enter certificate ID (e.g. CERT-123456)" class="form-control">
+          <button class="btn">Verify</button>
+        </div>
+        <p class="form-help">Enter a certificate ID to verify its authenticity.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Sample Certificate</h2>
+      <div class="alert alert-success">
+        <p>Valid Certificate</p>
+      </div>
+
+      <div class="certificate-details">
+        <div class="certificate-field">
+          <p class="field-label">Certificate ID</p>
+          <p class="field-value">CERT-123456</p>
+        </div>
+        <div class="certificate-field">
+          <p class="field-label">Type</p>
+          <p class="field-value">Identity Verification</p>
+        </div>
+        <div class="certificate-field">
+          <p class="field-label">Issued To</p>
+          <p class="field-value">Demo User</p>
+        </div>
+        <div class="certificate-field">
+          <p class="field-label">Issued By</p>
+          <p class="field-value">Proof of You</p>
+        </div>
+        <div class="certificate-field">
+          <p class="field-label">Issued On</p>
+          <p class="field-value">April 10, 2023</p>
+        </div>
+        <div class="certificate-field">
+          <p class="field-label">Status</p>
+          <p class="field-value status-valid">Valid</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2023 Proof of You. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
