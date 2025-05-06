@@ -1,33 +1,39 @@
 "use client"
 
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
 import { useAuth } from "@/contexts/auth-context"
 
 // Create context
 const DemoDataContext = createContext(null)
 
 export function DemoDataProvider({ children }) {
-  const { isDemo, getDemoUser } = useAuth()
+  const { getDemoUser } = useAuth()
+  const [localData, setLocalData] = useState({
+    addedVerifications: [],
+    addedDocuments: [],
+  })
 
-  // Get demo data if in demo mode
-  const demoUser = isDemo ? getDemoUser() : null
+  // Get demo data
+  const demoUser = getDemoUser()
   const demoData = demoUser?.demoData || {}
 
   // Demo data access functions
   const getVerifications = () => {
-    return demoData.verifications || []
+    return [...demoData.verifications, ...localData.addedVerifications]
   }
 
   const getVerificationById = (id) => {
-    return demoData.verifications?.find((v) => v.id === id) || null
+    const allVerifications = getVerifications()
+    return allVerifications.find((v) => v.id === id) || null
   }
 
   const getDocuments = () => {
-    return demoData.documents || []
+    return [...demoData.documents, ...localData.addedDocuments]
   }
 
   const getDocumentById = (id) => {
-    return demoData.documents?.find((d) => d.id === id) || null
+    const allDocuments = getDocuments()
+    return allDocuments.find((d) => d.id === id) || null
   }
 
   const getCertificates = () => {
@@ -42,23 +48,37 @@ export function DemoDataProvider({ children }) {
     return demoData.notifications || []
   }
 
-  // Simulated data mutation functions (these don't actually persist data)
+  // Simulated data mutation functions
   const addVerification = (verification) => {
-    // In a real app, this would add to the database
-    console.log("Demo: Adding verification", verification)
-    return { ...verification, id: `v${Math.floor(Math.random() * 1000)}` }
+    const newVerification = {
+      ...verification,
+      id: `v${Math.floor(Math.random() * 1000)}`,
+    }
+    setLocalData((prev) => ({
+      ...prev,
+      addedVerifications: [...prev.addedVerifications, newVerification],
+    }))
+    return newVerification
   }
 
   const uploadDocument = (document) => {
-    // In a real app, this would upload to storage
-    console.log("Demo: Uploading document", document)
-    return { ...document, id: `doc_${Math.floor(Math.random() * 1000)}` }
+    const newDocument = {
+      ...document,
+      id: `doc_${Math.floor(Math.random() * 1000)}`,
+      uploadDate: new Date().toISOString(),
+      status: "Uploaded",
+    }
+    setLocalData((prev) => ({
+      ...prev,
+      addedDocuments: [...prev.addedDocuments, newDocument],
+    }))
+    return newDocument
   }
 
   return (
     <DemoDataContext.Provider
       value={{
-        isDemo,
+        isDemo: true,
         getVerifications,
         getVerificationById,
         getDocuments,

@@ -13,10 +13,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, User, LogOut, Play } from "lucide-react"
+import { Menu, User } from "lucide-react"
 
 export function SiteHeader() {
-  const { user, isAuthenticated, isDemo, signOut, enterDemoMode } = useAuth()
+  const { user } = useAuth()
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -29,7 +29,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="font-bold text-xl">
-            Proof of You
+            Proof of You <span className="text-xs font-normal text-muted-foreground">(Demo)</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,11 +46,9 @@ export function SiteHeader() {
             <Link href="/verify" className="text-sm font-medium transition-colors hover:text-primary">
               Verify
             </Link>
-            {(isAuthenticated || isDemo) && (
-              <Link href="/notifications" className="text-sm font-medium transition-colors hover:text-primary">
-                Notifications
-              </Link>
-            )}
+            <Link href="/notifications" className="text-sm font-medium transition-colors hover:text-primary">
+              Notifications
+            </Link>
           </nav>
         </div>
 
@@ -93,126 +91,49 @@ export function SiteHeader() {
                 >
                   Verify
                 </Link>
-
-                {(isAuthenticated || isDemo) && (
-                  <Link
-                    href="/notifications"
-                    className="text-sm font-medium transition-colors hover:text-primary"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Notifications
-                  </Link>
-                )}
-
-                <div className="border-t pt-4 mt-4">
-                  {isAuthenticated ? (
-                    <>
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                          <User className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">{user?.name}</p>
-                          <p className="text-xs text-muted-foreground">{user?.email}</p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start"
-                        onClick={() => {
-                          signOut()
-                          setIsMenuOpen(false)
-                        }}
-                      >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
-                      </Button>
-                    </>
-                  ) : (
-                    <div className="flex flex-col gap-2">
-                      {!isDemo && (
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            enterDemoMode()
-                            setIsMenuOpen(false)
-                          }}
-                        >
-                          <Play className="mr-2 h-4 w-4" />
-                          Try Demo
-                        </Button>
-                      )}
-                      <Button asChild onClick={() => setIsMenuOpen(false)}>
-                        <Link href="/auth/signin">Sign In</Link>
-                      </Button>
-                      <Button variant="outline" asChild onClick={() => setIsMenuOpen(false)}>
-                        <Link href="/auth/signup">Create Account</Link>
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                <Link
+                  href="/notifications"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Notifications
+                </Link>
               </nav>
             </SheetContent>
           </Sheet>
         </div>
 
-        {/* Desktop Auth Buttons */}
+        {/* Desktop User Menu */}
         <div className="hidden md:flex items-center gap-4">
-          {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="rounded-full h-8 px-2">
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-3 w-3" />
-                    </div>
-                    <span className="max-w-[100px] truncate">{user?.name}</span>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="rounded-full h-8 px-2">
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="h-3 w-3" />
                   </div>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <div className="flex items-center justify-start gap-2 p-2">
-                  <div className="flex flex-col space-y-1 leading-none">
-                    {user?.name && <p className="font-medium">{user.name}</p>}
-                    {user?.email && <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>}
-                  </div>
+                  <span className="max-w-[100px] truncate">{user?.name}</span>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onSelect={(e) => {
-                    e.preventDefault()
-                    signOut()
-                  }}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <>
-              {!isDemo && (
-                <Button variant="outline" onClick={enterDemoMode}>
-                  <Play className="mr-2 h-4 w-4" />
-                  Try Demo
-                </Button>
-              )}
-              <Button variant="ghost" asChild>
-                <Link href="/auth/signin">Sign In</Link>
               </Button>
-              <Button asChild>
-                <Link href="/auth/signup">Create Account</Link>
-              </Button>
-            </>
-          )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <div className="flex items-center justify-start gap-2 p-2">
+                <div className="flex flex-col space-y-1 leading-none">
+                  {user?.name && <p className="font-medium">{user.name}</p>}
+                  {user?.email && <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>}
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-xs text-muted-foreground">Demo User Account</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

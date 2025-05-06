@@ -1,7 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { createContext, useContext, useState, useEffect } from "react"
 
 // Create context
 const AuthContext = createContext(null)
@@ -107,103 +106,16 @@ const DEMO_USER = {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isDemo, setIsDemo] = useState(false)
-  const [demoStartTime, setDemoStartTime] = useState(null)
-  const router = useRouter()
+  // Always start in demo mode
+  const [isDemo, setIsDemo] = useState(true)
+  const [demoStartTime, setDemoStartTime] = useState(new Date())
 
-  // Check for existing session on mount
+  // Set demo start time on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("auth_user")
-    const demoMode = localStorage.getItem("demo_mode") === "true"
-    const storedDemoStartTime = localStorage.getItem("demo_start_time")
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-
-    setIsDemo(demoMode)
-    if (storedDemoStartTime) {
-      setDemoStartTime(new Date(storedDemoStartTime))
-    }
-    setIsLoading(false)
+    setDemoStartTime(new Date())
   }, [])
 
-  // Sign in function
-  const signIn = (email, password) => {
-    return new Promise((resolve, reject) => {
-      // Simulate API call
-      setTimeout(() => {
-        // For demo purposes, accept any credentials
-        if (email && password) {
-          const newUser = {
-            ...DEMO_USER,
-            email: email,
-            name: email.split("@")[0],
-          }
-
-          setUser(newUser)
-          localStorage.setItem("auth_user", JSON.stringify(newUser))
-          localStorage.setItem("demo_mode", "false")
-          setIsDemo(false)
-          resolve(newUser)
-        } else {
-          reject(new Error("Invalid credentials"))
-        }
-      }, 800)
-    })
-  }
-
-  // Sign up function
-  const signUp = (name, email, password) => {
-    return new Promise((resolve, reject) => {
-      // Simulate API call
-      setTimeout(() => {
-        if (name && email && password) {
-          const newUser = {
-            ...DEMO_USER,
-            name: name,
-            email: email,
-          }
-
-          setUser(newUser)
-          localStorage.setItem("auth_user", JSON.stringify(newUser))
-          localStorage.setItem("demo_mode", "false")
-          setIsDemo(false)
-          resolve(newUser)
-        } else {
-          reject(new Error("Please fill all required fields"))
-        }
-      }, 800)
-    })
-  }
-
-  // Sign out function
-  const signOut = () => {
-    setUser(null)
-    localStorage.removeItem("auth_user")
-    localStorage.removeItem("demo_mode")
-    setIsDemo(false)
-    router.push("/")
-  }
-
-  // Enter demo mode
-  const enterDemoMode = () => {
-    setIsDemo(true)
-    setDemoStartTime(new Date())
-    localStorage.setItem("demo_mode", "true")
-    localStorage.setItem("demo_start_time", new Date().toISOString())
-  }
-
-  // Exit demo mode
-  const exitDemoMode = () => {
-    setIsDemo(false)
-    setDemoStartTime(null)
-    localStorage.removeItem("demo_mode")
-    localStorage.removeItem("demo_start_time")
-  }
-
+  // Get demo user data
   const getDemoUser = () => {
     return DEMO_USER
   }
@@ -211,16 +123,11 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        user: isDemo ? getDemoUser() : user,
-        isAuthenticated: !!user || isDemo,
-        isLoading,
-        isDemo,
+        user: getDemoUser(),
+        isAuthenticated: true, // Always authenticated in demo mode
+        isLoading: false,
+        isDemo: true, // Always in demo mode
         demoStartTime,
-        signIn,
-        signUp,
-        signOut,
-        enterDemoMode,
-        exitDemoMode,
         getDemoUser,
       }}
     >
